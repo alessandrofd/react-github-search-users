@@ -5,12 +5,61 @@ import { GoRepo, GoGist } from 'react-icons/go'
 import { FiUsers, FiUserPlus } from 'react-icons/fi'
 
 const UserInfo = () => {
-  const data = React.useContext(GithubContext)
+  const {
+    githubUser: { public_repos, public_gists, followers, following },
+  } = React.useContext(GithubContext)
 
-  console.log(data)
+  const items = [
+    {
+      id: 1,
+      label: 'repos',
+      value: public_repos,
+      icon: <GoRepo />,
+      color: 'pink',
+    },
+    {
+      id: 2,
+      label: 'gists',
+      value: public_gists,
+      icon: <GoGist />,
+      color: 'green',
+    },
+    {
+      id: 3,
+      label: 'followers',
+      value: followers,
+      icon: <FiUsers />,
+      color: 'purple',
+    },
+    {
+      id: 1,
+      label: 'following',
+      value: following,
+      icon: <FiUserPlus />,
+      color: 'yellow',
+    },
+  ]
 
-  return <h2>user info component</h2>
+  return (
+    <section className="section">
+      <Wrapper>
+        {items.map((item) => (
+          <Item key={item.id} {...item} />
+        ))}
+      </Wrapper>
+    </section>
+  )
 }
+
+const Item = ({ label, value, icon, color }) => (
+  <article className="item">
+    <span className={color}>{icon}</span>
+    <div>
+      <h3>{value}</h3>
+      <p>{label}</p>
+    </div>
+  </article>
+)
 
 const Wrapper = styled.section`
   display: grid;
