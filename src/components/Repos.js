@@ -6,6 +6,18 @@ import { ExampleChart, Pie3D, Column3D, Bar3D, Doughnut2D } from './Charts'
 const Repos = () => {
   const { repos } = React.useContext(GithubContext)
 
+  const languageMap = repos.reduce((map, { language }) => {
+    if (language) map.set(language, (map.get(language) ?? 0) + 1)
+    return map
+  }, new Map())
+
+  const languageData = [...languageMap.entries()]
+    .sort(([, a], [, b]) => b - a)
+    .slice(0, 5)
+    .map((item) => ({ label: item[0], value: item[1] }))
+
+  console.log(languageData)
+
   const chartData = [
     {
       label: 'HTML',
@@ -24,7 +36,7 @@ const Repos = () => {
   return (
     <section className="section">
       <Wrapper className="section-center">
-        <Pie3D data={chartData} />
+        <Pie3D data={languageData} />
         {/* <ExampleChart data={chartData} /> */}
       </Wrapper>
     </section>
